@@ -22,7 +22,13 @@ jobs:
       - name: Check links
         uses: lycheeverse/lychee-action@v2
         with:
-          args: --verbose --no-progress --max-concurrency 4 './**/*.md'
+          # Accept anti-bot status codes (403/415/429) as alive — many real sites
+          # block link-checker bots while serving fine to humans. Only true dead
+          # links (404/410/timeouts/DNS failures) fail the build.
+          args: >-
+            --verbose --no-progress --max-concurrency 4
+            --accept 200..=299,403,415,429
+            './**/*.md'
           fail: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

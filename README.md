@@ -1,6 +1,10 @@
-# Awesome AI Automations [![Awesome](https://awesome.re/badge.svg)](https://awesome.re)
+# Awesome AI Automations [![Awesome](https://awesome.re/badge.svg)](https://awesome.re) [![Live site](https://img.shields.io/badge/live-site-8b5cf6?style=flat&logo=github)](https://othmarodev.github.io/awesome-ai-automations/)
 
 > A curated list of automations, bots, and GitHub Actions — many powered by LLMs — that do the boring work for you. Cron jobs, CI pipelines, and assistants for developers, teams, and small businesses.
+
+### 🌐 [**Browse the interactive site → othmarodev.github.io/awesome-ai-automations**](https://othmarodev.github.io/awesome-ai-automations/)
+
+A filterable, searchable web version of this list with light/dark mode and EN/ES.
 
 Every tool here automates a recurring chore: writing release notes, chasing invoices, triaging issues, answering the same question 100 times. Entries marked 🔓 are open source and self-hostable.
 

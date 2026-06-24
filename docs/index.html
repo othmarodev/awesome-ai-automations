@@ -1,0 +1,660 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Awesome AI Automations — a curated list of bots & workflows that do the boring work</title>
+<meta name="description" content="A hand-curated list of automations, bots, and GitHub Actions — many powered by LLMs — that automate the boring work for developers, teams, and small businesses." />
+<script>
+  (function () {
+    try {
+      var t = localStorage.getItem('aaa-theme');
+      if (!t) t = window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', t);
+      var l = localStorage.getItem('aaa-lang') || 'en';
+      document.documentElement.setAttribute('lang', l);
+    } catch (e) {}
+  })();
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --accent-1: #8b5cf6;
+    --accent-2: #22d3ee;
+    --grad: linear-gradient(120deg, var(--accent-1), var(--accent-2));
+    --r-sm: 8px; --r-md: 12px; --r-lg: 18px; --r-xl: 26px;
+    --maxw: 1140px;
+    --ease: cubic-bezier(.22,.61,.36,1);
+    --font: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+    --mono: 'JetBrains Mono', ui-monospace, monospace;
+  }
+  [data-theme="dark"] {
+    --bg: #07070c; --bg-2: #0b0b12; --bg-3: #0f0f18;
+    --surface: rgba(255,255,255,.026);
+    --surface-2: rgba(255,255,255,.05);
+    --surface-hover: rgba(255,255,255,.07);
+    --border: rgba(255,255,255,.08);
+    --border-2: rgba(255,255,255,.14);
+    --text: #f3f3f8; --text-dim: #a4a4b6; --text-faint: #6c6c80;
+    --glow: rgba(139,92,246,.35);
+    --hero-fade: rgba(7,7,12,0);
+    --hero-fade-2: #07070c;
+  }
+  [data-theme="light"] {
+    --bg: #ffffff; --bg-2: #f7f7fb; --bg-3: #f0f0f6;
+    --surface: #ffffff;
+    --surface-2: #f5f5fa;
+    --surface-hover: #f0f0f7;
+    --border: rgba(18,18,40,.09);
+    --border-2: rgba(18,18,40,.16);
+    --text: #131320; --text-dim: #54546a; --text-faint: #8b8b9e;
+    --glow: rgba(124,58,237,.18);
+    --hero-fade: rgba(255,255,255,0);
+    --hero-fade-2: #ffffff;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; scroll-padding-top: 90px; }
+  body {
+    font-family: var(--font);
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+    transition: background .5s var(--ease), color .5s var(--ease);
+  }
+  a { color: inherit; text-decoration: none; }
+  ::selection { background: var(--accent-1); color: #fff; }
+  .wrap { width: 100%; max-width: var(--maxw); margin: 0 auto; padding: 0 24px; }
+  .grad-text {
+    background: var(--grad);
+    -webkit-background-clip: text; background-clip: text;
+    -webkit-text-fill-color: transparent; color: transparent;
+  }
+  [data-lang-es] { display: none; }
+  [lang="es"] [data-lang-en] { display: none; }
+  [lang="es"] [data-lang-es] { display: inline; }
+
+  /* NAV */
+  header.nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 50;
+    backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+    background: color-mix(in srgb, var(--bg) 72%, transparent);
+    border-bottom: 1px solid transparent;
+    transition: border-color .4s var(--ease), background .4s var(--ease);
+  }
+  header.nav.scrolled { border-bottom-color: var(--border); }
+  .nav-in { display: flex; align-items: center; justify-content: space-between; height: 68px; }
+  .brand { display: flex; align-items: center; gap: 11px; font-weight: 700; letter-spacing: -.02em; font-size: 15px; }
+  .brand .logo {
+    width: 30px; height: 30px; border-radius: 9px; background: var(--grad);
+    display: grid; place-items: center; color: #fff; font-size: 16px; flex-shrink: 0;
+    box-shadow: 0 6px 20px -6px var(--glow);
+  }
+  .brand .mono { font-family: var(--mono); font-weight: 600; }
+  .nav-links { display: flex; align-items: center; gap: 30px; }
+  .nav-link {
+    position: relative; font-size: 14px; font-weight: 500; color: var(--text-dim);
+    padding: 6px 0; transition: color .25s var(--ease), transform .25s var(--ease);
+  }
+  .nav-link::after {
+    content: ''; position: absolute; left: 0; bottom: -2px; height: 2px; width: 100%;
+    background: var(--grad); border-radius: 2px;
+    transform: scaleX(0); transform-origin: left; transition: transform .3s var(--ease);
+  }
+  .nav-link:hover { color: var(--text); transform: translateY(-1px); }
+  .nav-link:hover::after, .nav-link.active::after { transform: scaleX(1); }
+  .nav-link.active { color: var(--text); }
+  .nav-tools { display: flex; align-items: center; gap: 10px; }
+  .icon-btn {
+    height: 38px; min-width: 38px; padding: 0 12px; border-radius: 10px;
+    border: 1px solid var(--border); background: var(--surface);
+    color: var(--text); font-family: var(--font); font-size: 13px; font-weight: 600;
+    display: inline-flex; align-items: center; justify-content: center; gap: 7px; cursor: pointer;
+    transition: background .25s var(--ease), border-color .25s var(--ease), transform .15s var(--ease);
+  }
+  .icon-btn:hover { background: var(--surface-hover); border-color: var(--border-2); }
+  .icon-btn:active { transform: scale(.95); }
+  .icon-btn svg { width: 17px; height: 17px; }
+  .btn-primary {
+    background: var(--grad); color: #fff; border: none;
+    box-shadow: 0 10px 28px -10px var(--glow);
+  }
+  .btn-primary:hover { background: var(--grad); filter: brightness(1.07); }
+  .lang-toggle { font-family: var(--mono); letter-spacing: .04em; }
+  .lang-toggle b { color: var(--accent-2); }
+  [lang="es"] .lang-toggle .l-en { opacity: .4; font-weight: 500; color: var(--text-dim); }
+  [lang="en"] .lang-toggle .l-es { opacity: .4; font-weight: 500; color: var(--text-dim); }
+
+  /* HERO */
+  .hero { position: relative; padding: 168px 0 96px; overflow: hidden; }
+  #net { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 0; }
+  .hero::after {
+    content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 42%;
+    background: linear-gradient(var(--hero-fade), var(--hero-fade-2)); z-index: 1; pointer-events: none;
+  }
+  .hero-in { position: relative; z-index: 2; text-align: center; }
+  .badge {
+    display: inline-flex; align-items: center; gap: 9px; padding: 7px 15px 7px 11px;
+    border-radius: 999px; border: 1px solid var(--border-2);
+    background: var(--surface-2); font-size: 13px; font-weight: 500; color: var(--text-dim);
+    margin-bottom: 30px; backdrop-filter: blur(8px);
+  }
+  .badge .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent-2);
+    box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent-2) 22%, transparent); animation: pulse 2.4s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.45} }
+  h1.title {
+    font-size: clamp(40px, 7vw, 78px); line-height: 1.04; font-weight: 800;
+    letter-spacing: -.035em; margin-bottom: 24px;
+  }
+  .sub {
+    font-size: clamp(17px, 2.2vw, 21px); color: var(--text-dim); max-width: 620px;
+    margin: 0 auto 38px; line-height: 1.6;
+  }
+  .cta-row { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; margin-bottom: 64px; }
+  .cta-row .icon-btn { height: 50px; padding: 0 24px; font-size: 15px; border-radius: 13px; }
+  .stats { display: flex; gap: 18px; justify-content: center; flex-wrap: wrap; }
+  .stat {
+    min-width: 150px; padding: 20px 26px; border-radius: var(--r-lg);
+    border: 1px solid var(--border); background: var(--surface);
+    backdrop-filter: blur(10px); text-align: center;
+  }
+  .stat .num { font-size: 38px; font-weight: 800; letter-spacing: -.03em; font-family: var(--mono); }
+  .stat .lbl { font-size: 13px; color: var(--text-dim); margin-top: 3px; }
+
+  /* reveal */
+  .reveal { opacity: 0; transform: translateY(26px); transition: opacity .7s var(--ease), transform .7s var(--ease); }
+  .reveal.in { opacity: 1; transform: none; }
+  .d1{transition-delay:.05s}.d2{transition-delay:.12s}.d3{transition-delay:.19s}.d4{transition-delay:.26s}.d5{transition-delay:.33s}.d6{transition-delay:.4s}
+
+  /* SECTION */
+  section { position: relative; z-index: 2; }
+  .sec-head { text-align: center; max-width: 640px; margin: 0 auto 54px; }
+  .eyebrow { font-family: var(--mono); font-size: 13px; font-weight: 600; letter-spacing: .12em;
+    text-transform: uppercase; color: var(--accent-1); margin-bottom: 14px; }
+  h2.sec-title { font-size: clamp(28px, 4.4vw, 44px); font-weight: 800; letter-spacing: -.03em; line-height: 1.1; }
+  .sec-sub { font-size: 17px; color: var(--text-dim); margin-top: 16px; }
+
+  /* WHY */
+  .why { padding: 60px 0 30px; }
+  .why-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+  .why-card { padding: 30px 26px; border-radius: var(--r-lg); border: 1px solid var(--border);
+    background: var(--surface); transition: transform .35s var(--ease), border-color .35s var(--ease); }
+  .why-card:hover { transform: translateY(-4px); border-color: var(--border-2); }
+  .why-ic { width: 46px; height: 46px; border-radius: 13px; display: grid; place-items: center;
+    background: color-mix(in srgb, var(--accent-1) 14%, transparent); color: var(--accent-1); margin-bottom: 18px; }
+  .why-ic svg { width: 23px; height: 23px; }
+  .why-card h3 { font-size: 18px; font-weight: 700; letter-spacing: -.01em; margin-bottom: 9px; }
+  .why-card p { font-size: 14.5px; color: var(--text-dim); }
+
+  /* TOOLS */
+  .tools { padding: 96px 0; }
+  .filters { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-bottom: 44px; }
+  .chip {
+    padding: 9px 18px; border-radius: 999px; border: 1px solid var(--border);
+    background: var(--surface); color: var(--text-dim); font-size: 14px; font-weight: 500;
+    cursor: pointer; transition: all .25s var(--ease); white-space: nowrap;
+  }
+  .chip:hover { border-color: var(--border-2); color: var(--text); }
+  .chip.active { background: var(--grad); color: #fff; border-color: transparent; box-shadow: 0 8px 22px -10px var(--glow); }
+  .chip .c-count { opacity: .65; font-family: var(--mono); font-size: 12px; margin-left: 5px; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 16px; }
+  .card {
+    position: relative; padding: 22px; border-radius: var(--r-lg);
+    border: 1px solid var(--border); background: var(--surface);
+    display: flex; flex-direction: column; gap: 13px; overflow: hidden;
+    transition: transform .35s var(--ease), border-color .35s var(--ease), box-shadow .35s var(--ease), opacity .4s var(--ease);
+  }
+  .card::before {
+    content: ''; position: absolute; inset: 0; border-radius: inherit; padding: 1px;
+    background: var(--grad); -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor; mask-composite: exclude;
+    opacity: 0; transition: opacity .35s var(--ease); pointer-events: none;
+  }
+  .card:hover { transform: translateY(-5px); box-shadow: 0 22px 50px -26px var(--glow); }
+  .card:hover::before { opacity: 1; }
+  .card.hide { display: none; }
+  .card-top { display: flex; align-items: center; gap: 13px; }
+  .mono-av {
+    width: 44px; height: 44px; border-radius: 12px; flex-shrink: 0;
+    background: var(--grad); color: #fff; display: grid; place-items: center;
+    font-weight: 700; font-size: 19px; letter-spacing: -.02em;
+    box-shadow: 0 6px 18px -8px var(--glow);
+  }
+  .card-name { font-size: 17px; font-weight: 700; letter-spacing: -.015em; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .oss { font-family: var(--mono); font-size: 10.5px; font-weight: 600; letter-spacing: .04em;
+    padding: 2px 7px; border-radius: 5px; text-transform: uppercase;
+    background: color-mix(in srgb, var(--accent-2) 16%, transparent); color: var(--accent-2); }
+  .card-cat { font-size: 12px; color: var(--text-faint); font-family: var(--mono); }
+  .card-desc { font-size: 14px; color: var(--text-dim); flex: 1; }
+  .card-link { display: inline-flex; align-items: center; gap: 6px; font-size: 13.5px; font-weight: 600; color: var(--accent-1); margin-top: 2px; }
+  .card-link svg { width: 15px; height: 15px; transition: transform .25s var(--ease); }
+  .card:hover .card-link svg { transform: translate(3px,-3px); }
+
+  /* CONTRIBUTE */
+  .contribute { padding: 40px 0 100px; }
+  .cbox {
+    position: relative; overflow: hidden; border-radius: var(--r-xl);
+    border: 1px solid var(--border-2); background: var(--surface-2);
+    padding: 60px 40px; text-align: center;
+  }
+  .cbox::before {
+    content: ''; position: absolute; top: -40%; left: 50%; width: 560px; height: 560px;
+    transform: translateX(-50%); background: radial-gradient(circle, var(--glow), transparent 65%);
+    pointer-events: none;
+  }
+  .cbox > * { position: relative; }
+  .cbox h2 { font-size: clamp(26px,4vw,40px); font-weight: 800; letter-spacing: -.03em; margin-bottom: 16px; }
+  .cbox p { font-size: 17px; color: var(--text-dim); max-width: 520px; margin: 0 auto 30px; }
+
+  /* FOOTER */
+  footer { background: #06060b; color: #e9e9f2; padding: 56px 0 34px; border-top: 1px solid rgba(255,255,255,.08); }
+  .foot-grid { display: flex; justify-content: space-between; gap: 40px; flex-wrap: wrap; margin-bottom: 40px; }
+  .foot-brand { max-width: 320px; }
+  .foot-brand .brand { color: #fff; margin-bottom: 14px; }
+  .foot-brand p { font-size: 14px; color: #9b9bb0; }
+  .foot-cols { display: flex; gap: 64px; flex-wrap: wrap; }
+  .foot-col h4 { font-size: 12px; text-transform: uppercase; letter-spacing: .1em; color: #7d7d93; margin-bottom: 16px; font-weight: 600; }
+  .foot-col a { display: block; font-size: 14.5px; color: #c4c4d4; margin-bottom: 11px; position: relative; width: fit-content; transition: color .25s var(--ease); }
+  .foot-col a::after { content:''; position:absolute; left:0; bottom:-2px; height:2px; width:100%; background: var(--grad); border-radius:2px; transform: scaleX(0); transform-origin:left; transition: transform .3s var(--ease); }
+  .foot-col a:hover { color: #fff; }
+  .foot-col a:hover::after { transform: scaleX(1); }
+  .foot-bottom { display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap;
+    padding-top: 26px; border-top: 1px solid rgba(255,255,255,.08); font-size: 13.5px; color: #8a8aa0; }
+  .foot-bottom .mono { font-family: var(--mono); }
+
+  @media (max-width: 860px) {
+    .nav-links { display: none; }
+    .why-grid { grid-template-columns: 1fr; }
+    .hero { padding: 140px 0 70px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .reveal { opacity: 1; transform: none; transition: none; }
+    * { scroll-behavior: auto; }
+  }
+</style>
+</head>
+<body>
+
+<header class="nav" id="nav">
+  <div class="wrap nav-in">
+    <a href="#top" class="brand">
+      <span class="logo">⚡</span>
+      <span class="mono">awesome-ai-automations</span>
+    </a>
+    <nav class="nav-links" id="navlinks">
+      <a class="nav-link" href="#why"><span data-lang-en>Why</span><span data-lang-es>Por qué</span></a>
+      <a class="nav-link" href="#tools"><span data-lang-en>Tools</span><span data-lang-es>Herramientas</span></a>
+      <a class="nav-link" href="#contribute"><span data-lang-en>Contribute</span><span data-lang-es>Contribuir</span></a>
+    </nav>
+    <div class="nav-tools">
+      <button class="icon-btn lang-toggle" id="langBtn" aria-label="Toggle language">
+        <span class="l-en">EN</span><span style="opacity:.3">/</span><span class="l-es">ES</span>
+      </button>
+      <button class="icon-btn" id="themeBtn" aria-label="Toggle theme">
+        <svg id="themeIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></svg>
+      </button>
+      <a class="icon-btn btn-primary" id="ghTop" href="#" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.5 2 2 6.6 2 12.3c0 4.5 2.9 8.3 6.8 9.7.5.1.7-.2.7-.5v-1.7c-2.8.6-3.4-1.4-3.4-1.4-.5-1.2-1.1-1.5-1.1-1.5-.9-.6.1-.6.1-.6 1 .1 1.5 1 1.5 1 .9 1.6 2.4 1.1 3 .9.1-.7.4-1.1.6-1.4-2.2-.3-4.6-1.1-4.6-5 0-1.1.4-2 1-2.7-.1-.3-.4-1.3.1-2.7 0 0 .8-.3 2.7 1a9.3 9.3 0 0 1 5 0c1.9-1.3 2.7-1 2.7-1 .5 1.4.2 2.4.1 2.7.6.7 1 1.6 1 2.7 0 3.9-2.3 4.7-4.6 5 .4.3.7.9.7 1.9v2.8c0 .3.2.6.7.5 4-1.4 6.8-5.2 6.8-9.7C22 6.6 17.5 2 12 2Z"/></svg>
+        <span data-lang-en>Star</span><span data-lang-es>Star</span>
+      </a>
+    </div>
+  </div>
+</header>
+
+<main id="top">
+  <!-- HERO -->
+  <section class="hero">
+    <canvas id="net"></canvas>
+    <div class="wrap hero-in">
+      <div class="badge reveal in">
+        <span class="dot"></span>
+        <span data-lang-en>Open-source · curated · always growing</span>
+        <span data-lang-es>Open-source · curada · siempre creciendo</span>
+      </div>
+      <h1 class="title reveal in d1">
+        <span data-lang-en>The boring work,<br><span class="grad-text">automated.</span></span>
+        <span data-lang-es>El trabajo aburrido,<br><span class="grad-text">automatizado.</span></span>
+      </h1>
+      <p class="sub reveal in d2">
+        <span data-lang-en>A hand-curated list of bots, GitHub Actions, and workflows — many powered by LLMs — that quietly do the repetitive work for developers, teams, and small businesses.</span>
+        <span data-lang-es>Una lista curada a mano de bots, GitHub Actions y workflows — muchos con LLMs — que hacen el trabajo repetitivo por devs, equipos y pymes.</span>
+      </p>
+      <div class="cta-row reveal in d3">
+        <a class="icon-btn btn-primary" href="#tools">
+          <span data-lang-en>Explore the tools</span><span data-lang-es>Explorar herramientas</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </a>
+        <a class="icon-btn" id="ghHero" href="#" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.5 2 2 6.6 2 12.3c0 4.5 2.9 8.3 6.8 9.7.5.1.7-.2.7-.5v-1.7c-2.8.6-3.4-1.4-3.4-1.4-.5-1.2-1.1-1.5-1.1-1.5-.9-.6.1-.6.1-.6 1 .1 1.5 1 1.5 1 .9 1.6 2.4 1.1 3 .9.1-.7.4-1.1.6-1.4-2.2-.3-4.6-1.1-4.6-5 0-1.1.4-2 1-2.7-.1-.3-.4-1.3.1-2.7 0 0 .8-.3 2.7 1a9.3 9.3 0 0 1 5 0c1.9-1.3 2.7-1 2.7-1 .5 1.4.2 2.4.1 2.7.6.7 1 1.6 1 2.7 0 3.9-2.3 4.7-4.6 5 .4.3.7.9.7 1.9v2.8c0 .3.2.6.7.5 4-1.4 6.8-5.2 6.8-9.7C22 6.6 17.5 2 12 2Z"/></svg>
+          <span data-lang-en>View on GitHub</span><span data-lang-es>Ver en GitHub</span>
+        </a>
+      </div>
+      <div class="stats reveal in d4">
+        <div class="stat"><div class="num" data-count="47">0</div><div class="lbl"><span data-lang-en>curated tools</span><span data-lang-es>herramientas curadas</span></div></div>
+        <div class="stat"><div class="num" data-count="18">0</div><div class="lbl"><span data-lang-en>open source</span><span data-lang-es>open source</span></div></div>
+        <div class="stat"><div class="num" data-count="3">0</div><div class="lbl"><span data-lang-en>categories</span><span data-lang-es>categorías</span></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHY -->
+  <section class="why wrap" id="why">
+    <div class="sec-head reveal">
+      <div class="eyebrow"><span data-lang-en>Why this list</span><span data-lang-es>Por qué esta lista</span></div>
+      <h2 class="sec-title"><span data-lang-en>Signal, not noise.</span><span data-lang-es>Señal, no ruido.</span></h2>
+      <p class="sec-sub"><span data-lang-en>Every entry earns its place. No abandoned repos, no marketing fluff — just tools that remove a real, recurring chore.</span><span data-lang-es>Cada entrada se gana su lugar. Nada de repos abandonados ni humo de marketing — solo herramientas que sacan una tarea real y repetitiva.</span></p>
+    </div>
+    <div class="why-grid">
+      <div class="why-card reveal d1">
+        <div class="why-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></div>
+        <h3><span data-lang-en>Hand-curated</span><span data-lang-es>Curada a mano</span></h3>
+        <p><span data-lang-en>Each tool is checked, described in one honest sentence, and verified to be alive before it ships.</span><span data-lang-es>Cada herramienta se revisa, se describe en una frase honesta y se verifica que esté viva antes de entrar.</span></p>
+      </div>
+      <div class="why-card reveal d2">
+        <div class="why-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 18l6-6-6-6M8 6l-6 6 6 6"/></svg></div>
+        <h3><span data-lang-en>Open-source first</span><span data-lang-es>Open-source primero</span></h3>
+        <p><span data-lang-en>Self-hostable tools are flagged so you can own your stack instead of renting another SaaS.</span><span data-lang-es>Las herramientas self-hosteables van marcadas para que seas dueño de tu stack en vez de alquilar otro SaaS.</span></p>
+      </div>
+      <div class="why-card reveal d3">
+        <div class="why-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v4M12 18v4M4.9 4.9l2.9 2.9M16.2 16.2l2.9 2.9M2 12h4M18 12h4M4.9 19.1l2.9-2.9M16.2 7.8l2.9-2.9"/></svg></div>
+        <h3><span data-lang-en>LLM-powered</span><span data-lang-es>Potenciadas por LLM</span></h3>
+        <p><span data-lang-en>A growing share use models like Claude to triage, summarize, write, and decide — not just move data.</span><span data-lang-es>Cada vez más usan modelos como Claude para triar, resumir, escribir y decidir — no solo mover datos.</span></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- TOOLS -->
+  <section class="tools wrap" id="tools">
+    <div class="sec-head reveal">
+      <div class="eyebrow"><span data-lang-en>The collection</span><span data-lang-es>La colección</span></div>
+      <h2 class="sec-title"><span data-lang-en>47 tools that work while you don't.</span><span data-lang-es>47 herramientas que trabajan cuando vos no.</span></h2>
+    </div>
+    <div class="filters reveal" id="filters"></div>
+    <div class="grid" id="grid"></div>
+  </section>
+
+  <!-- CONTRIBUTE -->
+  <section class="contribute wrap" id="contribute">
+    <div class="cbox reveal">
+      <h2><span data-lang-en>Know one we're missing?</span><span data-lang-es>¿Conocés alguna que falte?</span></h2>
+      <p><span data-lang-en>This list grows through pull requests. If a tool removes a recurring chore and it's actively maintained, it belongs here.</span><span data-lang-es>Esta lista crece con pull requests. Si una herramienta saca una tarea repetitiva y está mantenida, este es su lugar.</span></p>
+      <a class="icon-btn btn-primary" id="ghContribute" href="#" target="_blank" rel="noopener" style="height:50px;padding:0 26px;font-size:15px;border-radius:13px;">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+        <span data-lang-en>Add a tool</span><span data-lang-es>Agregar una herramienta</span>
+      </a>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <div class="brand"><span class="logo">⚡</span><span class="mono">awesome-ai-automations</span></div>
+        <p><span data-lang-en>A curated list of automations and bots that do the boring work — for builders who'd rather ship.</span><span data-lang-es>Una lista curada de automatizaciones y bots que hacen el trabajo aburrido — para builders que prefieren shippear.</span></p>
+      </div>
+      <div class="foot-cols">
+        <div class="foot-col">
+          <h4><span data-lang-en>List</span><span data-lang-es>Lista</span></h4>
+          <a href="#why"><span data-lang-en>Why this list</span><span data-lang-es>Por qué</span></a>
+          <a href="#tools"><span data-lang-en>All tools</span><span data-lang-es>Herramientas</span></a>
+          <a href="#contribute"><span data-lang-en>Contribute</span><span data-lang-es>Contribuir</span></a>
+        </div>
+        <div class="foot-col">
+          <h4><span data-lang-en>Project</span><span data-lang-es>Proyecto</span></h4>
+          <a id="ghFoot" href="#" target="_blank" rel="noopener">GitHub</a>
+          <a id="ghIssues" href="#" target="_blank" rel="noopener"><span data-lang-en>Submit a tool</span><span data-lang-es>Proponer una herramienta</span></a>
+          <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">License · CC BY 4.0</a>
+        </div>
+        <div class="foot-col">
+          <h4><span data-lang-en>Maker</span><span data-lang-es>Autor</span></h4>
+          <a href="https://othmaro.dev" target="_blank" rel="noopener">othmaro.dev</a>
+          <a href="https://github.com/othmarodev" target="_blank" rel="noopener">@othmarodev</a>
+        </div>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span><span data-lang-en>Built by Othmaro Fallas.</span><span data-lang-es>Hecho por Othmaro Fallas.</span> <span class="mono">CC BY 4.0</span></span>
+      <span class="mono">⚡ awesome-ai-automations</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  var GH = 'https://github.com/othmarodev/awesome-ai-automations';
+  ['ghTop','ghHero','ghFoot','ghContribute'].forEach(function(id){ var e=document.getElementById(id); if(e) e.href=GH; });
+  document.getElementById('ghIssues').href = GH + '/blob/main/CONTRIBUTING.md';
+
+  var DATA = [
+    {n:'Typefully',u:'https://typefully.com',c:'devs',oss:0,en:'Turn one long piece into threads and scheduled posts.',es:'Convertí un texto largo en hilos y posts programados.'},
+    {n:'Postiz',u:'https://github.com/gitroomhq/postiz-app',c:'devs',oss:1,en:'Schedule and cross-post to every social network from one editor.',es:'Programá y cross-posteá a todas las redes desde un editor.'},
+    {n:'Hypefury',u:'https://hypefury.com',c:'devs',oss:0,en:'Recycle your best replies into standalone posts.',es:'Reciclá tus mejores respuestas en posts propios.'},
+    {n:'Satori',u:'https://github.com/vercel/satori',c:'devs',oss:1,en:'Generate social and carousel images from HTML & CSS.',es:'Generá imágenes para redes y carousels desde HTML y CSS.'},
+    {n:'F5Bot',u:'https://f5bot.com',c:'devs',oss:0,en:'Email alerts when your keywords hit Reddit, HN, or Lobsters.',es:'Alertas por email cuando tus keywords aparecen en Reddit, HN o Lobsters.'},
+    {n:'Geekbot',u:'https://geekbot.com',c:'devs',oss:0,en:'Async standups and surveys that summarize team progress.',es:'Standups async y encuestas que resumen el avance del equipo.'},
+    {n:'git-cliff',u:'https://github.com/orhun/git-cliff',c:'devs',oss:1,en:'Generate a changelog straight from your commit history.',es:'Generá un changelog directo desde tu historial de commits.'},
+    {n:'ChatGPT-CodeReview',u:'https://github.com/anc95/ChatGPT-CodeReview',c:'devs',oss:1,en:'An LLM that reviews your pull requests inline.',es:'Un LLM que revisa tus pull requests inline.'},
+    {n:'Renovate',u:'https://github.com/renovatebot/renovate',c:'devs',oss:1,en:'Automated dependency updates with grouped PRs.',es:'Updates de dependencias automáticos con PRs agrupados.'},
+    {n:'Uptime Kuma',u:'https://github.com/louislam/uptime-kuma',c:'devs',oss:1,en:'Self-hosted uptime, domain expiry, and SSL monitoring.',es:'Monitoreo self-hosted de uptime, vencimiento de dominios y SSL.'},
+    {n:'n8n',u:'https://github.com/n8n-io/n8n',c:'devs',oss:1,en:'Fair-code workflow automation with built-in LLM steps.',es:'Automatización de workflows fair-code con pasos de LLM.'},
+    {n:'n8n templates',u:'https://n8n.io/workflows',c:'devs',oss:0,en:'Hundreds of copy-paste automation recipes.',es:'Cientos de recetas de automatización copy-paste.'},
+    {n:'Shortwave',u:'https://shortwave.com',c:'devs',oss:0,en:'AI inbox that categorizes, summarizes, and drafts replies.',es:'Inbox con IA que categoriza, resume y redacta respuestas.'},
+    {n:'Fireflies',u:'https://fireflies.ai',c:'devs',oss:0,en:'Records meetings and turns them into notes and action items.',es:'Graba reuniones y las vuelve notas y tareas.'},
+    {n:'Readwise',u:'https://readwise.io',c:'devs',oss:0,en:'Save links and articles, get spaced-repetition digests.',es:'Guardá links y artículos, recibí digests con repetición espaciada.'},
+    {n:'Landbot',u:'https://landbot.io',c:'business',oss:0,en:'No-code WhatsApp and web bots for FAQs and bookings.',es:'Bots no-code de WhatsApp y web para FAQs y reservas.'},
+    {n:'GoHighLevel',u:'https://www.gohighlevel.com',c:'business',oss:0,en:'Instant lead response, follow-up, and CRM automation.',es:'Respuesta instantánea a leads, follow-up y CRM automatizado.'},
+    {n:'Chaser',u:'https://www.chaserhq.com',c:'business',oss:0,en:'Automated invoice payment reminders and chasing.',es:'Recordatorios de cobro y persecución de facturas automáticos.'},
+    {n:'Typebot',u:'https://github.com/baptisteArno/typebot.io',c:'business',oss:1,en:'Build conversational order and booking bots.',es:'Armá bots conversacionales de pedidos y reservas.'},
+    {n:'Sortly',u:'https://www.sortly.com',c:'business',oss:0,en:'Inventory tracking with low-stock alerts.',es:'Control de inventario con alertas de stock bajo.'},
+    {n:'ChatPDF',u:'https://www.chatpdf.com',c:'business',oss:0,en:'Ask questions and summarize long contracts and PDFs.',es:'Preguntá y resumí contratos y PDFs largos.'},
+    {n:'Expensify',u:'https://www.expensify.com',c:'business',oss:0,en:'Snap a receipt, auto-extract and categorize expenses.',es:'Sacá una foto al recibo, extraé y categorizá gastos.'},
+    {n:'PandaDoc',u:'https://www.pandadoc.com',c:'business',oss:0,en:'Generate quotes and proposals as PDFs from input.',es:'Generá presupuestos y propuestas en PDF desde un input.'},
+    {n:'Calendly',u:'https://calendly.com',c:'business',oss:0,en:'Scheduling with automated appointment reminders.',es:'Agendado con recordatorios de cita automáticos.'},
+    {n:'Mealime',u:'https://www.mealime.com',c:'business',oss:0,en:'Weekly meal plans that generate a grocery list.',es:'Planes de comida semanales que generan la lista del súper.'},
+    {n:'Dex',u:'https://getdex.com',c:'business',oss:0,en:'Personal CRM that reminds you to follow up.',es:'CRM personal que te recuerda hacer follow-up.'},
+    {n:'TripIt',u:'https://www.tripit.com',c:'business',oss:0,en:'Parses flight and hotel confirmations into one itinerary.',es:'Junta confirmaciones de vuelo y hotel en un itinerario.'},
+    {n:'Rocket Money',u:'https://www.rocketmoney.com',c:'business',oss:0,en:'Tracks subscriptions and flags price hikes to cancel.',es:'Trackea suscripciones y marca subas de precio para cancelar.'},
+    {n:'Medisafe',u:'https://www.medisafe.com',c:'business',oss:0,en:'Medication and appointment reminders with caregiver alerts.',es:'Recordatorios de medicación y citas con alertas a cuidadores.'},
+    {n:'Teal',u:'https://www.tealhq.com',c:'business',oss:0,en:'Tailors your resume per job and tracks applications.',es:'Adapta tu CV por puesto y trackea postulaciones.'},
+    {n:'Opus Clip',u:'https://www.opus.pro',c:'business',oss:0,en:'Turns one long video into short clips for every platform.',es:'Convierte un video largo en clips cortos para cada red.'},
+    {n:'Zapier',u:'https://zapier.com',c:'business',oss:0,en:'Trigger actions across 6,000+ apps from a form or event.',es:'Dispará acciones en 6.000+ apps desde un form o evento.'},
+    {n:'Qodo',u:'https://www.qodo.ai',c:'deep',oss:0,en:'Generates and maintains unit tests for changed files.',es:'Genera y mantiene unit tests de los archivos cambiados.'},
+    {n:'Codecov',u:'https://about.codecov.io',c:'deep',oss:0,en:'Coverage gates that block PRs which drop coverage.',es:'Gates de cobertura que bloquean PRs que la bajan.'},
+    {n:'Gitleaks',u:'https://github.com/gitleaks/gitleaks',c:'deep',oss:1,en:'Scans diffs for committed secrets before merge.',es:'Escanea diffs por secrets commiteados antes del merge.'},
+    {n:'readme.so',u:'https://readme.so',c:'deep',oss:0,en:'Assemble a complete README from a repo.',es:'Armá un README completo desde un repo.'},
+    {n:'Mintlify',u:'https://mintlify.com',c:'deep',oss:0,en:'Docs that flag drift when the code changes.',es:'Docs que avisan cuando el código las dejó viejas.'},
+    {n:'Scalar',u:'https://github.com/scalar/scalar',c:'deep',oss:1,en:'Auto-generate browsable API docs from OpenAPI.',es:'Generá docs de API navegables desde OpenAPI.'},
+    {n:'CodeRabbit',u:'https://coderabbit.ai',c:'deep',oss:0,en:'Writes PR titles, summaries, and review comments.',es:'Escribe títulos, resúmenes y comentarios de PR.'},
+    {n:'actions/labeler',u:'https://github.com/actions/labeler',c:'deep',oss:1,en:'Auto-label PRs based on changed files.',es:'Auto-etiqueta PRs según los archivos cambiados.'},
+    {n:'pr-size-labeler',u:'https://github.com/CodelyTV/pr-size-labeler',c:'deep',oss:1,en:'Warns when a PR is too big and suggests splitting it.',es:'Avisa cuando un PR es muy grande y sugiere partirlo.'},
+    {n:'actions/stale',u:'https://github.com/actions/stale',c:'deep',oss:1,en:'Nudges and archives stale issues and PRs.',es:'Avisa y archiva issues y PRs zombis.'},
+    {n:'all-contributors',u:'https://github.com/all-contributors/all-contributors',c:'deep',oss:1,en:'Welcomes and credits first-time contributors.',es:'Da la bienvenida y acredita a nuevos contribuidores.'},
+    {n:'Hygen',u:'https://github.com/jondot/hygen',c:'deep',oss:1,en:'Scaffold consistent boilerplate from templates.',es:'Generá boilerplate consistente desde templates.'},
+    {n:'git-auto-commit',u:'https://github.com/stefanzweifel/git-auto-commit-action',c:'deep',oss:1,en:'Format, fix, and auto-commit back to the PR.',es:'Formatea, arregla y auto-commitea al PR.'},
+    {n:'semantic-release',u:'https://github.com/semantic-release/semantic-release',c:'deep',oss:1,en:'Automate versioning, tagging, publishing, and notes.',es:'Automatizá versionado, tags, publicación y release notes.'},
+    {n:'Sentry',u:'https://github.com/getsentry/sentry',c:'deep',oss:1,en:'Turns runtime errors into deduplicated issues.',es:'Convierte errores de runtime en issues deduplicados.'}
+  ];
+  var CATS = {
+    devs:    {en:'Developers',   es:'Devs'},
+    business:{en:'Business',     es:'Negocios'},
+    deep:    {en:'Dev deep',     es:'Dev deep'}
+  };
+
+  function lang(){ return document.documentElement.getAttribute('lang'); }
+
+  var grid = document.getElementById('grid');
+  function renderCards(){
+    var L = lang();
+    grid.innerHTML = DATA.map(function(d, i){
+      var cat = CATS[d.c][L];
+      var ossTag = d.oss ? '<span class="oss">OSS</span>' : '';
+      return '<a class="card reveal d'+((i%6)+1)+'" data-cat="'+d.c+'" data-oss="'+d.oss+'" href="'+d.u+'" target="_blank" rel="noopener">'+
+        '<div class="card-top">'+
+          '<div class="mono-av">'+d.n.charAt(0).toUpperCase()+'</div>'+
+          '<div><div class="card-name">'+d.n+ossTag+'</div><div class="card-cat">'+cat+'</div></div>'+
+        '</div>'+
+        '<div class="card-desc">'+d[L]+'</div>'+
+        '<span class="card-link">'+(L==='es'?'Ver':'Visit')+
+          '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9"/></svg>'+
+        '</span>'+
+      '</a>';
+    }).join('');
+    observeReveal();
+  }
+
+  var FILTERS = [
+    {k:'all', en:'All', es:'Todas'},
+    {k:'devs', en:'Developers', es:'Devs'},
+    {k:'business', en:'Business', es:'Negocios'},
+    {k:'deep', en:'Dev deep', es:'Dev deep'},
+    {k:'oss', en:'Open source', es:'Open source'}
+  ];
+  function count(k){ if(k==='all')return DATA.length; if(k==='oss')return DATA.filter(function(d){return d.oss;}).length; return DATA.filter(function(d){return d.c===k;}).length; }
+  var curFilter = 'all';
+  var filters = document.getElementById('filters');
+  function renderFilters(){
+    var L = lang();
+    filters.innerHTML = FILTERS.map(function(f){
+      return '<button class="chip'+(f.k===curFilter?' active':'')+'" data-k="'+f.k+'">'+f[L]+'<span class="c-count">'+count(f.k)+'</span></button>';
+    }).join('');
+    filters.querySelectorAll('.chip').forEach(function(c){
+      c.addEventListener('click', function(){ curFilter=c.dataset.k; applyFilter(); renderFilters(); });
+    });
+  }
+  function applyFilter(){
+    grid.querySelectorAll('.card').forEach(function(card){
+      var ok = curFilter==='all' || (curFilter==='oss' ? card.dataset.oss==='1' : card.dataset.cat===curFilter);
+      card.classList.toggle('hide', !ok);
+    });
+  }
+
+  // reveal observer
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, {threshold:.12, rootMargin:'0px 0px -8% 0px'});
+  function observeReveal(){ document.querySelectorAll('.reveal:not(.in)').forEach(function(el){ io.observe(el); }); }
+
+  renderFilters(); renderCards(); applyFilter();
+
+  // language toggle
+  function setLang(l){
+    document.documentElement.setAttribute('lang', l);
+    try{ localStorage.setItem('aaa-lang', l); }catch(e){}
+    renderFilters(); renderCards(); applyFilter();
+  }
+  document.getElementById('langBtn').addEventListener('click', function(){ setLang(lang()==='en'?'es':'en'); });
+
+  // theme toggle
+  var sun = 'M12 1v2M12 21v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M1 12h2M21 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4';
+  var sunCircle = true;
+  function paintThemeIcon(){
+    var dark = document.documentElement.getAttribute('data-theme')==='dark';
+    var ic = document.getElementById('themeIcon');
+    if(dark){ ic.innerHTML = '<path d="M21 12.8A9 9 0 1 1 11.2 3 7 7 0 0 0 21 12.8Z"/>'; }
+    else { ic.innerHTML = '<circle cx="12" cy="12" r="4.2"/><path d="'+sun+'"/>'; }
+  }
+  paintThemeIcon();
+  document.getElementById('themeBtn').addEventListener('click', function(){
+    var dark = document.documentElement.getAttribute('data-theme')==='dark';
+    var next = dark?'light':'dark';
+    document.documentElement.setAttribute('data-theme', next);
+    try{ localStorage.setItem('aaa-theme', next); }catch(e){}
+    paintThemeIcon();
+  });
+
+  // nav scrolled + scroll-spy
+  var nav = document.getElementById('nav');
+  var sections = ['why','tools','contribute'].map(function(id){ return document.getElementById(id); });
+  var navLinks = Array.prototype.slice.call(document.querySelectorAll('.nav-link'));
+  function onScroll(){
+    nav.classList.toggle('scrolled', window.scrollY > 20);
+    var pos = window.scrollY + 140; var active = null;
+    sections.forEach(function(s){ if(s && s.offsetTop <= pos) active = s.id; });
+    navLinks.forEach(function(l){ l.classList.toggle('active', l.getAttribute('href') === '#'+active); });
+  }
+  window.addEventListener('scroll', onScroll, {passive:true}); onScroll();
+
+  // count-up
+  var counted = false;
+  var statIO = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting && !counted){
+        counted = true;
+        document.querySelectorAll('.stat .num').forEach(function(el){
+          var target = +el.dataset.count, start = null, dur = 1200;
+          function step(ts){ if(!start) start=ts; var p=Math.min((ts-start)/dur,1); el.textContent = Math.round(p*target); if(p<1) requestAnimationFrame(step); }
+          requestAnimationFrame(step);
+        });
+      }
+    });
+  }, {threshold:.5});
+  var statsEl = document.querySelector('.stats'); if(statsEl) statIO.observe(statsEl);
+
+  // HERO network animation
+  (function(){
+    var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var canvas = document.getElementById('net'), ctx = canvas.getContext('2d');
+    var W, H, DPR = Math.min(window.devicePixelRatio||1, 2), nodes = [], packets = [];
+    function accent(){ return document.documentElement.getAttribute('data-theme')==='dark'; }
+    function resize(){
+      var rect = canvas.parentElement.getBoundingClientRect();
+      W = rect.width; H = rect.height;
+      canvas.width = W*DPR; canvas.height = H*DPR; ctx.setTransform(DPR,0,0,DPR,0,0);
+      var count = Math.min(72, Math.round(W*H/16000));
+      nodes = []; for(var i=0;i<count;i++){ nodes.push({ x:Math.random()*W, y:Math.random()*H, vx:(Math.random()-.5)*.22, vy:(Math.random()-.5)*.22 }); }
+      packets = []; for(var j=0;j<7;j++){ spawnPacket(); }
+    }
+    function spawnPacket(){
+      if(nodes.length<2)return;
+      var a = (Math.random()*nodes.length)|0, b = (Math.random()*nodes.length)|0;
+      if(a===b)return; packets.push({a:a,b:b,t:Math.random(),sp:.003+Math.random()*.004});
+    }
+    var c1 = [139,92,246], c2 = [34,211,238];
+    function draw(){
+      ctx.clearRect(0,0,W,H);
+      var dark = accent();
+      var maxd = 132, lineBase = dark?0.5:0.32;
+      for(var i=0;i<nodes.length;i++){
+        var n=nodes[i]; n.x+=n.vx; n.y+=n.vy;
+        if(n.x<0||n.x>W)n.vx*=-1; if(n.y<0||n.y>H)n.vy*=-1;
+      }
+      for(var i=0;i<nodes.length;i++){
+        for(var k=i+1;k<nodes.length;k++){
+          var a=nodes[i],b=nodes[k],dx=a.x-b.x,dy=a.y-b.y,dist=Math.sqrt(dx*dx+dy*dy);
+          if(dist<maxd){
+            var al=(1-dist/maxd)*lineBase;
+            ctx.strokeStyle='rgba('+(dark?'150,140,230':'120,90,210')+','+al+')';
+            ctx.lineWidth=1; ctx.beginPath(); ctx.moveTo(a.x,a.y); ctx.lineTo(b.x,b.y); ctx.stroke();
+          }
+        }
+      }
+      for(var i=0;i<nodes.length;i++){
+        var n=nodes[i];
+        ctx.fillStyle='rgba('+(dark?'190,180,250':'130,100,220')+','+(dark?0.85:0.6)+')';
+        ctx.beginPath(); ctx.arc(n.x,n.y,1.7,0,6.283); ctx.fill();
+      }
+      for(var p=packets.length-1;p>=0;p--){
+        var pk=packets[p], a=nodes[pk.a], b=nodes[pk.b];
+        if(!a||!b){ packets.splice(p,1); spawnPacket(); continue; }
+        pk.t+=pk.sp;
+        if(pk.t>=1){ packets.splice(p,1); spawnPacket(); continue; }
+        var x=a.x+(b.x-a.x)*pk.t, y=a.y+(b.y-a.y)*pk.t;
+        var mix=pk.t; var r=Math.round(c1[0]+(c2[0]-c1[0])*mix), g=Math.round(c1[1]+(c2[1]-c1[1])*mix), bl=Math.round(c1[2]+(c2[2]-c1[2])*mix);
+        var grd=ctx.createRadialGradient(x,y,0,x,y,7);
+        grd.addColorStop(0,'rgba('+r+','+g+','+bl+',.95)'); grd.addColorStop(1,'rgba('+r+','+g+','+bl+',0)');
+        ctx.fillStyle=grd; ctx.beginPath(); ctx.arc(x,y,7,0,6.283); ctx.fill();
+        ctx.fillStyle='rgba('+r+','+g+','+bl+',1)'; ctx.beginPath(); ctx.arc(x,y,2.1,0,6.283); ctx.fill();
+      }
+      raf = requestAnimationFrame(draw);
+    }
+    var raf;
+    resize();
+    if(reduce){ draw(); cancelAnimationFrame(raf); } else { draw(); }
+    var rt; window.addEventListener('resize', function(){ clearTimeout(rt); rt=setTimeout(function(){ cancelAnimationFrame(raf); resize(); if(!reduce) draw(); }, 180); });
+  })();
+</script>
+</body>
+</html>

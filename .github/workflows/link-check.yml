@@ -1,0 +1,28 @@
+name: Link check
+
+# Runs on every push and PR so dead links never reach main.
+# The weekly schedule is intentionally commented out — enable it only once
+# the repo is established, and keep it to at most one run per week.
+on:
+  push:
+    branches: [main]
+  pull_request:
+  # schedule:
+  #   - cron: '0 9 * * 1'   # Mondays 09:00 UTC — keep polling light
+
+permissions:
+  contents: read
+
+jobs:
+  link-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check links
+        uses: lycheeverse/lychee-action@v2
+        with:
+          args: --verbose --no-progress --max-concurrency 4 './**/*.md'
+          fail: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

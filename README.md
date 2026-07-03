@@ -44,6 +44,7 @@ Every tool here automates a recurring chore: writing release notes, chasing invo
 - [ChatGPT-CodeReview](https://github.com/anc95/ChatGPT-CodeReview) - LLM that reviews your pull requests inline. 🔓
 - [Renovate](https://github.com/renovatebot/renovate) - Automated dependency updates with grouped PRs. 🔓
 - [Uptime Kuma](https://github.com/louislam/uptime-kuma) - Self-hosted uptime, domain expiry, and SSL certificate monitoring. 🔓
+- [Caveman](https://github.com/JuliusBrussee/caveman) - Cut AI agent output ~65% by teaching Claude Code, Cursor, and 30+ agents to speak tersely without losing technical accuracy. Ships `/caveman`, `caveman-commit`, and `caveman-review`. By [Julius Brussee](https://github.com/JuliusBrussee). 🔓
 
 ### Everyday life
 

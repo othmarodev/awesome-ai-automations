@@ -41,6 +41,7 @@ Every tool here automates a recurring chore: writing release notes, chasing invo
 
 - [Geekbot](https://geekbot.com) - Async standups and surveys that summarize team progress.
 - [git-cliff](https://github.com/orhun/git-cliff) - Generate a changelog from your commit history. 🔓
+- [GitHub Income Scout](https://github.com/George4177/github-income-scout) - Screens public issues into Markdown, JSON, and CSV reports. 🔓
 - [ChatGPT-CodeReview](https://github.com/anc95/ChatGPT-CodeReview) - LLM that reviews your pull requests inline. 🔓
 - [Renovate](https://github.com/renovatebot/renovate) - Automated dependency updates with grouped PRs. 🔓
 - [Uptime Kuma](https://github.com/louislam/uptime-kuma) - Self-hosted uptime, domain expiry, and SSL certificate monitoring. 🔓
